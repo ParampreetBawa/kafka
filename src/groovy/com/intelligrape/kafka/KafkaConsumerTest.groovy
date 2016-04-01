@@ -13,20 +13,13 @@ import org.apache.log4j.Logger
 class KafkaConsumerTest {
 
     public static void main(String[] args){
-        String zooKeeper = args[0];
-        String groupId = args[1];
-        String topic = args[2];
-        int threads = Integer.parseInt(args[3]);
-        println("consuming ${topic} groupid - ${groupId} thread - ${threads}")
+        String zooKeeper = "localhost:2181"
+        String groupId = "test-gpid"
+        List<String> topics = ["test2"]
+        println("consuming ${topics} groupid - ${groupId} thread -1")
 
-        KafkaConsumerGroup example = new KafkaConsumerGroup(zooKeeper, groupId, topic);
-        example.run(threads);
-
-//        try {
-//            Thread.sleep(10000);
-//        } catch (InterruptedException ie) {
-//            //ignore
-//        }
-//        example.shutdown();
+        KafkaConsumerGroup example = new KafkaConsumerGroup(zooKeeper, groupId, topics);
+        example.run(1);
+        println("end")
     }
 }

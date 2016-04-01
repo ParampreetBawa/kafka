@@ -23,12 +23,12 @@ grails.project.dependency.resolution = {
 
     repositories {
         inherits true // Whether to inherit repository definitions from plugins
-
+        mavenLocal()
         grailsPlugins()
         grailsHome()
         grailsCentral()
 
-        mavenLocal()
+
         mavenCentral()
 
         // uncomment these (or add new ones) to enable remote dependency resolution from public Maven repositories
@@ -48,6 +48,10 @@ grails.project.dependency.resolution = {
             exclude "jms"
         }
         compile('org.codehaus.jackson:jackson-mapper-asl:1.9.13')
+//        compile "org.apache.poi:poi:3.12"
+//        compile "org.apache.poi:poi-ooxml:3.12"
+//        compile "org.apache.poi:poi-ooxml-schemas:3.12"
+        compile 'org.apache.curator:curator-recipes:2.8.0'
     }
 
     plugins {
@@ -63,7 +67,6 @@ grails.project.dependency.resolution = {
         build ":tomcat:$grailsVersion"
 
         runtime ":database-migration:1.3.2"
-
         compile ':cache:1.0.1'
     }
 }

@@ -7,6 +7,7 @@ import kafka.producer.KeyedMessage
 import kafka.producer.ProducerConfig
 import org.codehaus.jackson.map.ObjectMapper
 import org.codehaus.jackson.map.SerializationConfig
+import scala.annotation.meta.getter
 
 /**
  * Created by parampreet on 11/10/14.
@@ -23,8 +24,15 @@ class KafkaProducer {
         String brokers = "localhost:9092"
         props.put("metadata.broker.list", brokers);
         props.put("serializer.class", "kafka.serializer.StringEncoder");
+//        props.put("acks","1")
+        props.put("compression.type","gzip")
         props.put("partitioner.class", "kafka.producer.DefaultPartitioner");
-        props.put("request.required.acks", "1");
+//        props.put("request.required.acks", "1");
+//        props.put('default.replication.factor',"1")
+//        props.put("batch.num.messages", "2000");
+//        props.put("producer.type", "sync")
+//        props.put("queue.buffering.max.messages", "2000")
+
         ProducerConfig config = new ProducerConfig(props);
         return config
     }
@@ -35,22 +43,13 @@ class KafkaProducer {
         return producer
     }
 
-    public static void doProduce(String topicName, Map<String, Object> dataMap) {
-        String topic = topicName.toLowerCase()
-        ObjectMapper  om = new ObjectMapper()
+    public static void doProduce(String topic, Map data) {
+        ObjectMapper om = new ObjectMapper()
         om.configure(SerializationConfig.Feature.WRITE_DATES_AS_TIMESTAMPS, false)
-        String data = om.writeValueAsString(dataMap)
-        String key = null
-        KeyedMessage<String, String> km= new KeyedMessage(topic, key, data)
-        if (log.isDebugEnabled())
-            log.debug("Producing data on topic ${topic}:\n${data}")
-
+        String d = om.writeValueAsString(data)
+        String key = "0"
+        KeyedMessage<String, String> km= new KeyedMessage(topic, key, d)
         getProducer().send(km)
-//        buffer << km
-//        if (buffer.size() >= LIMIT) {
-//            getProducer().send(buffer)
-//            buffer.clear()
-//        }
     }
 
 
